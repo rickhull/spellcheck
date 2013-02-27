@@ -1,6 +1,6 @@
 - - -
 
-### Trie based State-aware Recursive Levenshtein-ish Spelling Corrector
+## Trie based State-aware Recursive Levenshtein-ish Spelling Corrector
 
 Requires: Ruby 1.9.3
 
@@ -42,7 +42,7 @@ Credits and such: too many people and papers to list, but the most obvious one w
 
 - - -
 
-### Spellbreaker Misspeller
+## Spellbreaker Misspeller
 
 Requires: Ruby 1.9.3
 
