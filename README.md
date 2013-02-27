@@ -1,4 +1,6 @@
-## Trie-based Recursive State-aware Levenshtein-ish Spelling Corrector
+- - -
+
+### Trie based State-aware Recursive Levenshtein-ish Spelling Corrector
 
 Requires: Ruby 1.9.3
 
@@ -9,7 +11,7 @@ I'm not up to date on Ruby coding conventions yet, so it will probably make you 
 
 - - -
 
-### Usage and Examples
+#### Usage and Examples
 
 It accepts an optional single argument, the path to the dictionary file to load
 
@@ -38,9 +40,9 @@ To exit simply break out of the application ( standard control+c ) or force kill
 
 Credits and such: too many people and papers to list, but the most obvious one would have to be [Steve Hanov](http://stevehanov.ca)
 
----
+- - -
 
-## Spellbreaker Misspeller
+### Spellbreaker Misspeller
 
 Requires: Ruby 1.9.3
 
@@ -48,7 +50,7 @@ This is a really simple script to misspell words based on the criteria in the Tw
 
 - - -
 
-### Usage and Examples
+#### Usage and Examples
 
 Same as the spellcheck, it accepts an optional dictionary path.
 
