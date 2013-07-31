@@ -1,84 +1,68 @@
 # this is pretty awful, it's just built to get the job done
 
-class Misspell
-  attr_reader :dictionary
+module Misspell
+  VOWELS = %w{a e i o u}
 
-  def initialize
-    @dictionary = []
-    @process = [
-      0, # :case,
-      1, # :repeat,
-      2, # :vowel,
-      3, # :case_repeat,
-      4, # :case_vowel,
-      5, # :repeat_case,
-      6, # :repeat_vowel,
-      7, # :vowel_case,
-      8, # :vowel_repeat,
-      9, # :case_repeat_vowel
-    ]
-    @@vowels = ['a','e','i','o','u']
+  def self.vowels(word)
+    word.length.times { |i|
+      word[i] = VOWELS.sample if VOWELS.include?(word[i])
+    }
+    word
   end
 
-  def build(dict)
-    if File.exists?(dict)
-      IO.foreach(dict) do |word|
-        @dictionary << word.strip.downcase
-      end
-    else
-      abort("Exit: Invalid dictionary #{dict}, is the path correct?")
-    end
+  def self.repeat(word)
+    (rand(3) + 1).times {
+      random = rand word.length
+      char = word[random]
+      word.insert(random, char) if char != '\''
+    }
+    word
   end
 
-  def vowels(word)
-    (0..(word.length - 1)).each do |i|
-      if @@vowels.include?(word[i])
-        word[i] = (rand(100) >= 50) ? @@vowels.sample : word[i]
-      end
-    end
-    return word
+  def self.caps(word)
+    start = rand(word.length - 1) # can't be the last char
+    finish = start + 1
+    remaining = word.length - 1 - start
+    finish += rand(remaining) if remaining >= 1
+    word[start..finish] = word[start..finish].upcase
+    word
   end
 
-  def repeat(word)
-    (1..rand(1..3)).each do |i|
-      random = rand(0..word.length-1)
-      if word[random] != '\''
-        word.insert(random,word[random])
-      end
-    end
-    return word
-  end
-
-  def caps(word)
-    random = rand(0..word.length/2)
-    randomr = random+(rand(0..3))
-    word[random..randomr] = word[random..randomr].upcase
-    return word
-  end
-
-  def wrong(word)
-    case @process.sample
+  def self.wrong(word)
+    case rand(3)
     when 0
-      caps(word)
+      word = self.caps(word)
     when 1
-      repeat(word)
+      word = self.repeat(word)
     when 2
-      vowels(word)
-    when 3
-      repeat(caps(word))
-    when 4
-      vowels(caps(word))
-    when 5
-      caps(repeat(word))
-    when 6
-      vowels(repeat(word))
-    when 7
-      caps(vowels(word))
-    when 8
-      repeat(vowels(word))
-    when 9
-      vowels(repeat(caps(word)))
+      word = self.vowels(word)
     end
-    return word
+    rand(2).zero? ? word : self.wrong(word)
+  end
+
+  # iterate over the input file, generating a wrong output word
+  # with random-sized input skips
+  #
+  def self.process(dict)
+    if File.exists?(dict)
+      test = false
+      count = 0
+      target = rand(500)
+      IO.foreach(dict) { |word|
+        # skip a random amount of words
+        count += 1
+        next if count < target
+
+        word = word.chomp.strip
+        next if word.empty?
+
+        # output, update random count state
+        puts self.wrong(word)
+        count = 0
+        target = rand(500)
+      }
+    else
+      raise "Invalid dictionary: #{dict}"
+    end
   end
 end
