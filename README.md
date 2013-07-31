@@ -11,12 +11,21 @@ I'm not up to date on Ruby coding conventions yet, so it will probably make you 
 
 - - -
 
+#### "Install"
+
+```
+git clone [paste from github]
+cd spellcheck
+export RUBYLIB="`pwd`/lib"
+export PATH="$PATH:`pwd`/bin"
+```
+
 #### Usage and Examples
 
 It accepts an optional single argument, the path to the dictionary file to load
 
 ```
-$ ./spellcheck.rb /usr/share/dict/words
+$ spellcheck.rb /usr/share/dict/words
 Loaded, ready!
 > cunsperricy
 conspiracy
@@ -25,7 +34,7 @@ conspiracy
 If you do not pass it a path, it will ask for it on startup
 
 ```
-$ ./spellcheck.rb
+$ spellcheck.rb
 Please enter the path to a dictionary file and press enter to continue
 ( Default: '/usr/share/dict/words' )
 > /usr/share/dict/words
@@ -55,7 +64,7 @@ This is a really simple script to misspell words based on the criteria in the Tw
 Same as the spellcheck, it accepts an optional dictionary path.
 
 ```
-$ ./spellbreaker.rb
+$ spellcheck.rb generate
 Please enter the path to a dictionary file and press enter to continue
 ( Default: '/usr/share/dict/words' )
 >
@@ -71,7 +80,7 @@ As you can see, it first outputs the dictionary path, then randomly chooses a wo
 Passing it to the spellchecker with a path, the dictionary path is fed automatically:
 
 ```
-$ ./spellbreaker.rb /usr/share/dict/words | ./spellcheck.rb
+$ spellcheck.rb generate /usr/share/dict/words | spellcheck.rb
 Please enter the path to a dictionary file and press enter to continue
 ( Default: '/usr/share/dict/words' )
 > Loaded, ready!
