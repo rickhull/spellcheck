@@ -210,10 +210,10 @@ if __FILE__ == $0
         # good upper limit
         puts trieHard.step(input, trieHard.maxLength, stateHandler)
       end
-    rescue Interrupt
-      # Pretty message for keyboard interrupt death
-      warn "\nBye!"
-      exit 1
     end
+  rescue Interrupt
+    # Pretty message for keyboard interrupt death
+    warn "\nBye!"
+    exit 1
   end
 end
