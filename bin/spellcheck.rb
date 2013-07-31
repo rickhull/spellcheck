@@ -21,6 +21,9 @@ def prompt_dict
   dict
 end
 
+%w{INT TERM QUIT}.each { |sig|
+  Signal.trap(sig) { warn "SIG#{sig}"; warn "Bye!"; exit }
+}
 
 # embed a tiny, completely different program for generating words
 #
@@ -30,47 +33,37 @@ if ARGV[0].to_s.downcase == 'generate'
 
   require 'spellbreaker'
 
-  begin
-    dict = ARGV.shift || prompt_dict
-    spell = Misspell.new
-    spell.build dict
-    puts dict # Feed dictionary path to spellchecker
+  dict = ARGV.shift || prompt_dict
+  spell = Misspell.new
+  spell.build dict
+  puts dict # Feed dictionary path to spellchecker
 
-    loop { puts spell.wrong(spell.dictionary.sample) }
-  rescue Interrupt
-    warn "\nBye!"
-    exit
-  end
+  loop { puts spell.wrong(spell.dictionary.sample) }
 end
 
 # ok, we're not generating words.  Let's spellcheck them!
 #
 require 'spellcheck'
 
-begin
-  dict = ARGV.shift || prompt_dict
+dict = ARGV.shift || prompt_dict
 
-  # Make a trie
-  trieHard = Trie.new
-  stateHandler = State.new
+# Make a trie
+trieHard = Trie.new
+stateHandler = State.new
 
-  # Makin' Bacon
-  trieHard.build dict
-  puts "Loaded, ready!"
+# Makin' Bacon
+trieHard.build dict
+puts "Loaded, ready!"
 
-  # Now we just spin our wheels waiting on user input
-  # working when needed
-  loop do
-    # User prompt
-    print "> "
-    input = $stdin.gets.chomp
-    unless input.empty?
-      # An edit distance of your maximum string length seems to be a
-      # good upper limit
-      puts trieHard.step(input, trieHard.maxLength, stateHandler)
-    end
+# Now we just spin our wheels waiting on user input
+# working when needed
+loop do
+  # User prompt
+  print "> "
+  input = $stdin.gets.chomp
+  unless input.empty?
+    # An edit distance of your maximum string length seems to be a
+    # good upper limit
+    puts trieHard.step(input, trieHard.maxLength, stateHandler)
   end
-rescue Interrupt
-  # Pretty message for keyboard interrupt death
-  warn "\nBye!"
 end
