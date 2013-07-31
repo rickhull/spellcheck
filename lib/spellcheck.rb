@@ -61,8 +61,9 @@ class Trie
     self
   end
 
-  def suggest(word, max_cost)
+  def suggest(word, max_cost = nil)
     word = self.class.normalize(word)
+    max_cost ||= word.length
 
     # Made fast by keeping state between steps, so work is never done twice
     #
@@ -74,8 +75,9 @@ class Trie
     'NO SUGGESTION'
   end
 
-  def search(word, cost, outside_state = nil)
+  def search(word, cost = nil, outside_state = nil)
     word = self.class.normalize(word)
+    cost ||= word.length
     state = outside_state || {}
 
     # Build the first row for Levenshtein distance calculation
