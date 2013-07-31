@@ -65,10 +65,8 @@ Same as the spellcheck, it accepts an optional dictionary path.
 
 ```
 $ spellcheck.rb generate
-Please enter the path to a dictionary file and press enter to continue
-( Default: '/usr/share/dict/words' )
->
-/usr/share/dict/words
+Dictionary path required: (/usr/share/dict/words)
+> /usr/share/dict/words
 muayNARd's
 waDDLes
 mmmultipliceety's
@@ -81,8 +79,7 @@ Passing it to the spellchecker with a path, the dictionary path is fed automatic
 
 ```
 $ spellcheck.rb generate /usr/share/dict/words | spellcheck.rb
-Please enter the path to a dictionary file and press enter to continue
-( Default: '/usr/share/dict/words' )
+Dictionary path required: (/usr/share/dict/words)
 > Loaded, ready!
 > magi
 > imperiousness
