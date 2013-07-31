@@ -48,22 +48,21 @@ require 'spellcheck'
 dict = ARGV.shift || prompt_dict
 
 # Make a trie
-trieHard = Trie.new
-stateHandler = State.new
+trie = Trie.new
 
 # Makin' Bacon
-trieHard.build dict
+trie.build dict
 puts "Loaded, ready!"
 
 # Now we just spin our wheels waiting on user input
 # working when needed
-loop do
+loop {
   # User prompt
   print "> "
   input = $stdin.gets.chomp
   unless input.empty?
     # An edit distance of your maximum string length seems to be a
     # good upper limit
-    puts trieHard.step(input, trieHard.maxLength, stateHandler)
+    puts trie.suggest(input, trie.max_length)
   end
-end
+}
