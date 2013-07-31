@@ -35,8 +35,7 @@ If you do not pass it a path, it will ask for it on startup
 
 ```
 $ spellcheck.rb
-Please enter the path to a dictionary file and press enter to continue
-( Default: '/usr/share/dict/words' )
+Dictionary path required: (/usr/share/dict/words)
 > /usr/share/dict/words
 Loaded, ready!
 > supermayun
