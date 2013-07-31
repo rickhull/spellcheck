@@ -82,26 +82,3 @@ class Misspell
     return word
   end
 end
-
-if __FILE__ == $0
-  if !ARGV[0] || ARGV[0].strip.empty?
-    # No argument, prompt the user for a dictionary path
-    print "Please enter the path to a dictionary file and press enter to continue\n( Default: '/usr/share/dict/words' )\n> "
-    dict = $stdin.gets.chomp.strip
-  else
-    # Argument passed, should use that as the dictionary path
-    dict = ARGV[0].strip
-  end
-  spell = Misspell.new
-  spell.build((dict.empty?) ? dict = '/usr/share/dict/words' : dict)
-  puts dict # Feed dictionary path to spellchecker
-
-  begin
-    loop do
-      puts spell.wrong(spell.dictionary.sample)
-    end
-  rescue Interrupt
-    warn "\nBye!"
-    exit 1
-  end
-end

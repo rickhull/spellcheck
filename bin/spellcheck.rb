@@ -1,15 +1,50 @@
 #!/usr/bin/env ruby
 
+$stdout.sync = true
+
+default_dict = '/usr/share/dict/words'
+DICT = File.exists?(default_dict) ? default_dict : nil
+
+unless DICT
+  $stderr.puts "Note: could not find default dict #{default_dict}"
+  $stderr.puts "Try installing `wamerican` on Debian based systems"
+  $stderr.puts
+end
+
+def prompt_dict
+  msg = "Dictionary path required:"
+  msg << " (#{DICT})" if DICT
+  print "#{msg}\n> "
+  $stdin.gets.chomp
+end
+
+
+# embed a tiny, completely different program for generating words
+#
+if ARGV[0].to_s.downcase == 'generate'
+  require 'spellbreaker'
+
+  ARGV.shift
+  dict = ARGV.shift || prompt_dict
+  spell = Misspell.new
+  spell.build((dict.empty?) ? dict = '/usr/share/dict/words' : dict)
+  puts dict # Feed dictionary path to spellchecker
+
+  begin
+    loop do
+      puts spell.wrong(spell.dictionary.sample)
+    end
+  rescue Interrupt
+    warn "\nBye!"
+    exit
+  end
+end
+
+# ok, we're not generating words.  Let's spellcheck them!
+#
 require 'spellcheck'
 
-if !ARGV[0] || ARGV[0].strip.empty?
-  # No argument, prompt the user for a dictionary path
-  print "Please enter the path to a dictionary file and press enter to continue\n( Default: '/usr/share/dict/words' )\n> "
-  dict = $stdin.gets.chomp.strip
-else
-  # Argument passed, should use that as the dictionary path
-  dict = ARGV[0].strip
-end
+dict = ARGV.shift || prompt_dict
 
 # Make a trie
 trieHard = Trie.new
