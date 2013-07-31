@@ -1,20 +1,20 @@
 #!/usr/bin/env ruby
 
 default_dict = '/usr/share/dict/words'
-DICT = File.exists?(default_dict) && default_dict
+DEFAULT_DICT = File.exists?(default_dict) && default_dict
 
-unless DICT
+unless DEFAULT_DICT
   warn "Note: could not find default dict #{default_dict}"
   warn "Try installing `wamerican` on Debian based systems"
 end
 
 def prompt_dict
   msg = "Dictionary path required:"
-  msg << " (#{DICT})" if DICT
+  msg << " (#{DEFAULT_DICT})" if DEFAULT_DICT
   $stderr.print "#{msg}\n> "
   dict = $stdin.gets.chomp
   if dict.empty?
-    return DICT if DICT
+    return DEFAULT_DICT if DEFAULT_DICT
     warn "Dictionary path required"
     exit 1
   end
