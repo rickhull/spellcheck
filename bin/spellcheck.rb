@@ -34,11 +34,10 @@ if ARGV[0].to_s.downcase == 'generate'
   require 'spellbreaker'
 
   dict = ARGV.shift || prompt_dict
-  spell = Misspell.new
-  spell.build dict
   puts dict # Feed dictionary path to spellchecker
 
-  loop { puts spell.wrong(spell.dictionary.sample) }
+  Misspell.process dict
+  exit 0
 end
 
 # ok, we're not generating words.  Let's spellcheck them!
@@ -63,6 +62,6 @@ loop {
   unless input.empty?
     # An edit distance of your maximum string length seems to be a
     # good upper limit
-    puts trie.suggest(input, trie.max_length)
+    puts "#{input} -> #{trie.suggest(input, trie.max_length)}"
   end
 }
