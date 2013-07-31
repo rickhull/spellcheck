@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 # this is pretty awful, it's just built to get the job done
 
 class Misspell
@@ -85,7 +83,7 @@ class Misspell
   end
 end
 
-begin
+if __FILE__ == $0
   if !ARGV[0] || ARGV[0].strip.empty?
     # No argument, prompt the user for a dictionary path
     print "Please enter the path to a dictionary file and press enter to continue\n( Default: '/usr/share/dict/words' )\n> "
@@ -97,11 +95,13 @@ begin
   spell = Misspell.new
   spell.build((dict.empty?) ? dict = '/usr/share/dict/words' : dict)
   puts dict # Feed dictionary path to spellchecker
-  loop do
-    puts spell.wrong(spell.dictionary.sample)
-  end
 
-rescue Interrupt
-  warn "\nBye!"
-  exit 1
+  begin
+    loop do
+      puts spell.wrong(spell.dictionary.sample)
+    end
+  rescue Interrupt
+    warn "\nBye!"
+    exit 1
+  end
 end
